@@ -6,7 +6,7 @@ const {check}=require('express-validator')
 const mongoose=require('mongoose');
 
 const employeeRoutes=require('./routes/employees')
-const departmentRoutes=require('./routes/departments')
+const departmentRoutes= require('./routes/departments')
 app.use(bodyParser.json());
 app.use('/api/employees',employeeRoutes)
 app.use('/api/departments',departmentRoutes)
