@@ -7,7 +7,7 @@ const DepartmentController=require('../controllers/departments_controller');
 
 router.get('/',DepartmentController.index);
 router.get('/:department_id',DepartmentController.show);
-router.post('/employee/:employee_id',DepartmentController.DepartmentByEmployee);
+router.get('/employee/:employee_id',DepartmentController.DepartmentByEmployee);
 router.get('/search',DepartmentController.search);
 router.post('/',DepartmentController.store);
 

@@ -67,16 +67,22 @@ const show =  async (req,res)=>{
 
 }
 
-const employeeByDepartment=(req,res)=>{
+const employeeByDepartment= async (req,res)=>{
     let department_id=req.params.department_id;
 
    // const employee=dummyDB.filter( e => e.department === department_id);
-    if(!employee){
+    let employees
+    try {
+        employees=await Employee.find({department_id})
+    }catch (e) {
+     return  res.status(500).json('employee not found,check id please')
+    }
+    if(!employees){
 
         return res.status(401).json({'message':'no employee found by that id'})
     }
 
-    return res.status(200).json({employee});
+    return res.status(200).json({employees});
 }
 
 const search=(req,res)=>{

@@ -5,7 +5,7 @@ const employeeController =require('../controllers/employees_controller');
 
 router.get('/',employeeController.index);
 router.get('/:employee_id',employeeController.show);
-router.post('/department/:department_id',employeeController.employeeByDepartment);
+router.get('/department/:department_id',employeeController.employeeByDepartment);
 router.get('/search',employeeController.search);
 router.post('/',employeeController.store);
 
