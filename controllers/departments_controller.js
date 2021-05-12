@@ -82,9 +82,36 @@ const store=async (req,res)=>{
 
 }
 
-const update =(req,res)=>{
+const update =async (req,res)=>{
 let department_id=req.params.department_id
-    return res.status(200).json({'message':'update tge department by id '+department_id});
+
+
+    const { name, location} = req.body
+
+    const errors = validationResult(req)
+
+    if(!errors.isEmpty()){
+        return res.status(422).json({ errors })
+    }
+
+    let department;
+
+    try{
+        department = await Department.findById(department_id)
+    }catch (e){
+        return res.status(500).json({ message : e.toString()})
+    }
+
+    department.name = name
+    department.location = location
+
+    try{
+        await department.save()
+    }catch (e){
+        return res.status(500).json({ message: "Whoops, Something went wrong."})
+    }
+
+    return res.status(200).json({department})
 }
 
 const deleteDepartment =(req,res)=>{
