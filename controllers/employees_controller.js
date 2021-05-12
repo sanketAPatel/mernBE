@@ -52,7 +52,7 @@ const index= async (req,res)=>{
 
 
 const show = (req,res)=>{
- let employee_id=req.params.employee_id
+ let employee_id=req.params.employee_id;
 
     const employee=dummyDB.find( e =>e.id === employee_id);
 
@@ -100,7 +100,7 @@ const store=async (req, res) => {
     const newEmployee = new Employee({
         name,
         age,
-        department,
+        department_id,
         title
     })
 
