@@ -12,15 +12,26 @@ const index=async  (req,res)=>{
         return res.status(417).json({'message':e})
     }
 
-
     return res.status(200).json({departments})
 
 
 }
 
-const show = (req,res)=>{
+const show = async (req,res)=>{
     let department_id=req.params.department_id;
-    return res.status(200).json({'message':'here illl show department  by id '+department_id});
+
+    let department;
+
+    try {
+        department= await Department.findById(department_id)
+    }catch {
+        return  res.status(500).json({message:'not found id '})
+    }
+    if(!department){
+        return res.status(401).json({'message':'no employee found by that id'})
+    }
+    //console.log(employee)
+    res.status(200).json({department});
 
 }
 
