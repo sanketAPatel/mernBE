@@ -35,24 +35,6 @@ const show = async (req,res)=>{
 
 }
 
-     /*const DepartmentByEmployee=(req,res)=>{
-    let employee_id=req.params.employee_id;
-
-
-    let employees
-    try {
-        employees=await Employee.find({department_id})
-    }catch (e) {
-        return  res.status(500).json('employee not found,check id please')
-    }
-    if(!employees){
-
-        return res.status(401).json({'message':'no employee found by that id'})
-    }
-
-    return res.status(200).json({employees});
-}*/
-
 const search=(req,res)=>{
 
     return res.status(200).json({'message':'to search all the department '});
@@ -114,9 +96,31 @@ let department_id=req.params.department_id
     return res.status(200).json({department})
 }
 
-const deleteDepartment =(req,res)=>{
+const deleteDepartment = async (req,res)=>{
     let department_id=req.params.department_id
-    return res.status(200).json({'message':'delte the department by id'+department_id});
+
+
+    let department;
+
+    try{
+        department = await Department.findById(department_id)
+    }catch (e) {
+        return res.status(404).json({ message : e.toString()})
+    }
+
+    try{
+        await Employee.remove({department_id})
+    }catch (e) {
+        return res.status(500).json({ message: "Unable to delete emps"})
+    }
+
+    try{
+        await department.remove()
+    }catch (e) {
+        return res.status(500).json({ message: " Something went wrong"})
+    }
+
+    return res.status(200).json({ message : "department deleleted"})
 }
 
 exports.index=index;
