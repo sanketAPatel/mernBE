@@ -2,37 +2,7 @@ const {validationResult}=require('express-validator');
 const Employee=require('../models/employee');
 const Department=require('../models/department');
 
-let dummyDB=[
-    {
-        id: '1',
-        name:'n1',
-        age:'a1',
-        department:'d1',
-        title:'c1'
-    },
-    {
-        id: '2',
-        name:'t1',
-        age:'d1',
-        department:'d1',
-        title:'c1cc'
-    },
-    {
-        id: '3',
-        name:'n31',
-        age:'d1',
-        department:'d2',
-        title:'c23'
-    },
-    {
-        id: '4',
-        name:'tn4',
-        age:'d1df',
-        department:'d2',
-        title:'c2'
-    }
 
-]
 
 const index= async (req,res)=>{
 

@@ -1,6 +1,21 @@
+const {validationResult}=require('express-validator');
+const Employee=require('../models/employee');
+const Department=require('../models/department');
 
-const index=(req,res)=>{
-    return res.status(200).json({'message':'here  ill show all the departmetns  in list '});
+
+const index=async  (req,res)=>{
+    let departments;
+    try {
+        departments=await Department.find();
+    }
+    catch (e){
+        return res.status(417).json({'message':e})
+    }
+
+
+    return res.status(200).json({departments})
+
+
 }
 
 const show = (req,res)=>{

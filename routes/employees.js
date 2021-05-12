@@ -1,6 +1,6 @@
 const express=require('express')
 const router =express.Router();
-//const {check}=require('express-validator')
+const {check}=require('express-validator')
 const employeeController =require('../controllers/employees_controller');
 
 router.get('/',employeeController.index);
