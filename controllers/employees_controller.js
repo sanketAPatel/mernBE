@@ -49,25 +49,28 @@ const index= async (req,res)=>{
 }
 
 
+const show =  async (req,res)=>{
+    let employee_id=req.params.employee_id;
 
+    let employee;
 
-const show = (req,res)=>{
- let employee_id=req.params.employee_id;
-
-    const employee=dummyDB.find( e =>e.id === employee_id);
-
+        try {
+            employee= await Employee.findById(employee_id)
+        }catch {
+            return  res.status(500).json({message:'not found id '})
+        }
     if(!employee){
-
         return res.status(401).json({'message':'no employee found by that id'})
     }
-    return res.status(200).json({employee});
+    //console.log(employee)
+     res.status(200).json({employee});
 
 }
 
 const employeeByDepartment=(req,res)=>{
     let department_id=req.params.department_id;
 
-    const employee=dummyDB.filter( e => e.department === department_id);
+   // const employee=dummyDB.filter( e => e.department === department_id);
     if(!employee){
 
         return res.status(401).json({'message':'no employee found by that id'})
@@ -83,8 +86,8 @@ const search=(req,res)=>{
 
 
 const store=async (req, res) => {
-     // 1. rxv body params from req,
-      //chceck department exist by the
+    // 1. rxv body params from req,
+    //chceck department exist by the
     //create object for new employee  saving the employee with model; send resp.
 
     const {id, name, age, department_id, title} = req.body  //object destructuring approach
@@ -104,19 +107,18 @@ const store=async (req, res) => {
         title
     })
 
-
     try {
         await newEmployee.save()
-
+       //   console.log(newEmployee)
         department.employees.push(newEmployee)
-       await department.save()
+        await department.save()
     } catch (e) {
         return res.status(500).json({message: e.toString()})
 
     }
 
     return res.status(201).json({newEmployee})
-    // return res.status(200).json({'message':'to add new employees '});
+
 }
 
 const update =(req,res)=>{
