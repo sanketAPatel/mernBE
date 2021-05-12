@@ -127,30 +127,62 @@ const store=async (req, res) => {
 
 }
 
-const update =(req,res)=>{
+const update = async (req,res)=>{
     const{id,name,age,department,title}=req.body;
     let employee_id=req.params.employee_id;
-    const employee=dummyDB.find(e=> e.id==employee_id);
-    employee.id=id;
-    employee.name=name;
-    employee.age=age;
-    employee.department=department;
-    employee.title=title;
-
 
     const errors=validationResult(req)
     if(!errors.isEmpty()){
         res.json({errors})
     }
 
-    return res.status(200).json({'message':'update tge emplouees by id '+employee_id});
+    let employee;
+    try {
+        employee=  await Employee.findById(employee_id);
+    }catch (e){
+        return  res.status(500).json({message:'please check the id '})
+    }
+
+    //employee.id=id;
+    employee.name=name;
+    employee.age=age;
+   employee.department=department;
+    employee.title=title;
+
+
+try {
+    await  employee.save();
+}catch (e){
+        res.status(417).json({message:'data not updated for employee'})
+}
+   // return res.status(200).json({'message':'update the employees by id '+employee_id});
 }
 
-const deleteEmployee =(req,res)=>{
+const deleteEmployee =async  (req,res)=>{
     let employee_id=req.params.employee_id;
 
-    dummyDB=dummyDB.filter( e => e.id !== employee_id)
-    return res.status(200).json({'message':'delte the employees by id '+employee_id});
+   // dummyDB=dummyDB.filter( e => e.id !== employee_id)
+    let employee;
+    try {
+        employee=await Employee.findById(employee_id);
+    }
+   catch (e) {
+       return res.status(404).json({'message':'no emp found'});
+   }
+
+   let department= await Department.findById(employee.department_id);
+
+   try {
+        await  department.employees.pull(employee);
+              department.save();
+       await employee.remove();
+          }
+
+          catch (e) {
+       return res.status(417).json({'message':'employee details not deleted'})
+   }
+
+    return res.status(200).json({'message':'delete the employees by id '+employee_id});
 }
 
 exports.index=index;
