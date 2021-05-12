@@ -92,7 +92,7 @@ const store=async (req, res) => {
     let department;
 
     try {
-        department = Department.find(department_id);
+        department = await Department.findById(department_id);
     } catch (e) {
         return res.status(500).json({message: e.toString()})
     }
@@ -100,23 +100,22 @@ const store=async (req, res) => {
     const newEmployee = new Employee({
         name,
         age,
-        department_id,
+        department,
         title
     })
 
 
     try {
         await newEmployee.save()
-        department.employee.push(newEmployee)
+
+        department.employees.push(newEmployee)
        await department.save()
     } catch (e) {
         return res.status(500).json({message: e.toString()})
 
     }
 
-    //  dummyDB.push(newEmployee);
-         newEmployee.save();
-
+    return res.status(201).json({newEmployee})
     // return res.status(200).json({'message':'to add new employees '});
 }
 
@@ -129,8 +128,7 @@ const update =(req,res)=>{
     employee.age=age;
     employee.department=department;
     employee.title=title;
-    //const employeeIndex= dummyDB.findIndex(e=> e.id === employee_id);
-   // dummyDB[employeeIndex]=employee;
+
 
     const errors=validationResult(req)
     if(!errors.isEmpty()){
