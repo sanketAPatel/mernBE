@@ -149,7 +149,7 @@ const deleteEmployee =async  (req,res)=>{
           }
 
           catch (e) {
-       return res.status(417).json({'message':'employee details not deleted'})
+       return res.status(417).json({'message':'employee details not deleted - '+ e.toString()})
    }
 
     return res.status(200).json({'message':'delete the employees by id '+employee_id});
