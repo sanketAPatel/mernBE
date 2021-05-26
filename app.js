@@ -1,6 +1,6 @@
 const express =require('express');
 const  app =express();
-const port =process.env.PORT || 4000;
+const port =process.env.PORT||4000
 const bodyParser=require('body-parser')
 const {check}=require('express-validator')
 const mongoose=require('mongoose');
@@ -24,7 +24,7 @@ app.use('/api/employees',employeeRoutes)
 app.use('/api/departments',departmentRoutes)
 
 app.listen(port,()=>{
-    console.log('this app runs on http://localhost:5000');
+    console.log(`this app runs on http://localhost:${port}`);
 })
 
 mongoose.connect('mongodb+srv://sanketraj:Nopassword1@cluster0.7lwoz.mongodb.net/ems?retryWrites=true&w=majority'
